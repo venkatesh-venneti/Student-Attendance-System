@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Attendance System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f9fc;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 50px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            text-align: center;
+        }
+
+        .form-container {
+            margin-bottom: 20px;
+        }
+
+        #student-form {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        #student-form input {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        #student-form button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #28a745;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #student-form button:hover {
+            background-color: #218838;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table th, table td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        table th {
+            background-color: #f1f1f1;
+        }
+
+        button {
+            color: #fff;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .present {
+            background-color: #28a745;
+        }
+
+        .absent {
+            background-color: #dc3545;
+        }
+
+        .date-header {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 18px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Student Attendance System</h1>
+
+        
+        <div class="date-header">
+            <span id="current-date"></span>
+        </div>
+
+      
+        <div class="form-container">
+            <h2>Add Student</h2>
+            <form id="student-form">
+                <input type="text" id="name" placeholder="Enter Student Name" required>
+                <button type="submit">Add Student</button>
+            </form>
+        </div>
+
+     
+        <div class="attendance-container">
+            <h2>Attendance List</h2>
+            <table id="attendance-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Student Name</th>
+                        <th>Status</th>
+                        <th>Mark Present</th>
+                        <th>Mark Absent</th>
+                    </tr>
+                </thead>
+                <tbody>
+                   
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const studentForm = document.getElementById("student-form");
+            const attendanceTable = document.getElementById("attendance-table").getElementsByTagName("tbody")[0];
+            const currentDateElement = document.getElementById("current-date");
+
+            const today = new Date();
+            const formattedDate = today.toLocaleDateString();
+            currentDateElement.textContent = `Date: ${formattedDate}`;
+
+            
+            studentForm.addEventListener("submit", (e) => {
+                e.preventDefault();
+                const studentName = document.getElementById("name").value.trim();
+                if (studentName) {
+                    addStudentToTable(studentName, formattedDate);
+                    studentForm.reset();
+                } else {
+                    alert("Please enter a student name!");
+                }
+            });
+
+            function addStudentToTable(name, date) {
+                const row = attendanceTable.insertRow();
+
+              
+                const dateCell = row.insertCell(0);
+                dateCell.textContent = date;
+
+                const nameCell = row.insertCell(1);
+                nameCell.textContent = name;
+
+                const statusCell = row.insertCell(2);
+                statusCell.textContent = "Not Marked";
+                const presentCell = row.insertCell(3);
+                const presentButton = document.createElement("button");
+                presentButton.textContent = "Present";
+                presentButton.classList.add("present");
+                presentButton.addEventListener("click", () => {
+                    statusCell.textContent = "Present";
+                });
+                presentCell.appendChild(presentButton);
+
+                const absentCell = row.insertCell(4);
+                const absentButton = document.createElement("button");
+                absentButton.textContent = "Absent";
+                absentButton.classList.add("absent");
+                absentButton.addEventListener("click", () => {
+                    statusCell.textContent = "Absent";
+                });
+                absentCell.appendChild(absentButton);
+            }
+        });
+    </script>
+</body>
+</html>
